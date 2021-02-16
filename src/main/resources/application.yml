@@ -1,0 +1,34 @@
+spring:
+
+  #
+  # DATASOURCE CONFIG
+  #
+  datasource:
+    myapp:
+      host: ${SC_HOST:localhost}
+      port: ${SC_PORT:5432}
+      db: ${SC_DB:myapp}
+      currentSchema: ${SC_SCHEMA:public}
+    url: jdbc:postgresql://${spring.datasource.myapp.host}:${spring.datasource.myapp.port}/${spring.datasource.myapp.db}?currentSchema=${spring.datasource.myapp.currentSchema}
+    driver-class-name: org.postgresql.Driver
+    username: ${SC_USER:admin}
+    password: ${SC_PASSWORD:admin}
+
+  jackson:
+    serialization:
+      WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+
+  #
+  # HIBERNATE CONFIG
+  #
+  jpa:
+    properties:
+      hibernate:
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        default_schema: ${spring.datasource.myapp.currentSchema}
+    show-sql: true
