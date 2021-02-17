@@ -1,4 +1,4 @@
-package com.MyApp.controller.dto;
+package com.MyApp.user.controller.dto;
 
 import lombok.Data;
 

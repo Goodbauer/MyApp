@@ -32,3 +32,17 @@ spring:
             non_contextual_creation: true
         default_schema: ${spring.datasource.myapp.currentSchema}
     show-sql: true
+
+    #
+    # FlyWay
+    #
+    flyway:
+      enabled: false
+      validate-on-migrate: true
+      schemas: public
+      baseline-on-migrate: true
+
+    app:
+      jwtExpirationInMs: 604800000
+      jwtSecret: JWTSuperSecretKey
+

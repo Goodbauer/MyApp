@@ -1,8 +1,9 @@
-package com.MyApp.controller;
+package com.MyApp.user.controller;
 
-import com.MyApp.controller.dto.UserRequestDTO;
-import com.MyApp.service.UserService;
+import com.MyApp.user.controller.dto.UserRequestDTO;
+import com.MyApp.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,7 +27,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public Long createUser(@RequestBody UserRequestDTO userRequestDTO) {
+    public ResponseEntity createUser(@RequestBody UserRequestDTO userRequestDTO) {
         return userService.createUser(userRequestDTO.getLogin(), userRequestDTO.getPassword());
     }
 }
