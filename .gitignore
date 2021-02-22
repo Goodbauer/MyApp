@@ -1,5 +1,8 @@
 HELP.md
 target/
+ui/node_modules/
+ui/config/
+ui/scripts/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/

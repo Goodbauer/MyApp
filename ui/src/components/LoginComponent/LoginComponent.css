@@ -1,0 +1,15 @@
+.login-form {
+    height: 600px;
+}
+
+.login-form h1 {
+    color: white;
+    font-size: 30px;
+    width: 300px;
+    margin-left: 30px;
+}
+
+.login-form .ant-form-item-label > label {
+    color: white;
+    font-size: 16px;
+}
