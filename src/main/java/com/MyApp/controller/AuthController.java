@@ -96,6 +96,6 @@ public class AuthController {
         loginRequest.setPassword(signUpRequest.getPassword());
 
         return new ResponseEntity(new ApiResponse(true, "User Created!", userService.authenticateUser(loginRequest)),
-                HttpStatus.BAD_REQUEST);
+                HttpStatus.OK);
     }
 }
