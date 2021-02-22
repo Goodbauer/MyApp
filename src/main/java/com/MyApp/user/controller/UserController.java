@@ -11,23 +11,4 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class UserController {
-
-    private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-
-    @GetMapping("/login")
-    public String user() {
-        return "hello";
-    }
-
-    @PostMapping("/registration")
-    public ResponseEntity createUser(@RequestBody UserRequestDTO userRequestDTO) {
-        return userService.createUser(userRequestDTO.getLogin(), userRequestDTO.getPassword());
-    }
-}
+public class UserController {}

@@ -11,6 +11,7 @@ import com.MyApp.user.payload.SignUpRequest;
 import com.MyApp.user.repository.RoleRepository;
 import com.MyApp.user.repository.UserRepository;
 import com.MyApp.security.JwtTokenProvider;
+import com.MyApp.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,21 +49,27 @@ public class AuthController {
     @Autowired
     JwtTokenProvider tokenProvider;
 
+    @Autowired
+    UserService userService;
+
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
-
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-        String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        return userService.authenticateUser(loginRequest);
     }
+//    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+//
+////        Authentication authentication = authenticationManager.authenticate(
+////                new UsernamePasswordAuthenticationToken(
+////                        loginRequest.getUsername(),
+////                        loginRequest.getPassword()
+////                )
+////        );
+////
+////        SecurityContextHolder.getContext().setAuthentication(authentication);
+////
+////        String jwt = tokenProvider.generateToken(authentication);
+////        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+//    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
@@ -82,12 +89,13 @@ public class AuthController {
 
         user.setRoles(Collections.singleton(userRole));
 
-        User result = userRepository.save(user);
+        userRepository.save(user);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/users/{username}")
-                .buildAndExpand(result.getLogin()).toUri();
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername(signUpRequest.getUsername());
+        loginRequest.setPassword(signUpRequest.getPassword());
 
-        return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+        return new ResponseEntity(new ApiResponse(true, "User Created!", userService.authenticateUser(loginRequest)),
+                HttpStatus.BAD_REQUEST);
     }
 }

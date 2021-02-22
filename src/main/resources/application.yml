@@ -8,11 +8,13 @@ spring:
       host: ${SC_HOST:localhost}
       port: ${SC_PORT:5432}
       db: ${SC_DB:myapp}
+      user: ${SC_USER:admin}
       currentSchema: ${SC_SCHEMA:public}
-    url: jdbc:postgresql://${spring.datasource.myapp.host}:${spring.datasource.myapp.port}/${spring.datasource.myapp.db}?currentSchema=${spring.datasource.myapp.currentSchema}
+      password: ${SC_PASSWORD:admin}
+    url: jdbc:postgresql://${spring.datasource.myapp.host}:${spring.datasource.myapp.port}/${spring.datasource.myapp.db}
     driver-class-name: org.postgresql.Driver
-    username: ${SC_USER:admin}
-    password: ${SC_PASSWORD:admin}
+    username: ${spring.datasource.myapp.user}
+    password: ${spring.datasource.myapp.password}
 
   jackson:
     serialization:
@@ -36,13 +38,15 @@ spring:
     #
     # FlyWay
     #
-    flyway:
-      enabled: false
-      validate-on-migrate: true
-      schemas: public
-      baseline-on-migrate: true
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://${spring.datasource.myapp.host}:${spring.datasource.myapp.port}/${spring.datasource.myapp.db}
+    schemas: ${spring.datasource.myapp.currentSchema}
+    default-schema: ${spring.datasource.myapp.currentSchema}
+    user: ${spring.datasource.myapp.user}
+    password: ${spring.datasource.myapp.password}
 
-    app:
-      jwtExpirationInMs: 604800000
-      jwtSecret: JWTSuperSecretKey
+app:
+  jwtExpirationInMs: 604800000
+  jwtSecret: JWTSuperSecretKey
 

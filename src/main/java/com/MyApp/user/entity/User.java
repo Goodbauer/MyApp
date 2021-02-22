@@ -22,12 +22,10 @@ public class User {
     private Long id;
 
     @NotBlank
-    @Size(min = 3, max = 15)
     @Column(unique = true)
     private String login;
 
     @NotBlank
-    @Size(min = 6, max = 15)
     @Column(name = "password")
     private String password;
 
