@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {Form, Input, Button, Checkbox, Card} from 'antd';
-import axios from "axios";
+import { connect } from 'react-redux';
+
+import { SignIn, SignUp } from '../../actions/SignInUpActions';
 
 import './LoginComponent.css';
 
@@ -27,21 +29,32 @@ const cardStyles = {
     width: '400px',
 };
 
-const LoginComponent = ({match}) => {
+const LoginComponent = ({ signUp, signIn, userData, match }) => {
+
+    console.log(userData);
+
+    const [login, setLogin] = useState();
+    const [password, setPassword] = useState();
 
     const buttonText = match.path !== "/login" ? "Зарегистрироваться" : "Войти";
     const titleText = match.path !== "/login" ? "Регистрация" : "Добро пожаловать!";
 
-    const onClick = async () => {
-        const response = await axios({
-            method: 'post',
-            url: 'http://localhost:8080/api/auth/signup',
-            data: {
-                username: "123111",
-                password: "123111"
-            }
-        })
-            .then((answer) => console.log(answer));
+    const onSignInClick = () => {
+        signIn(login, password);
+    };
+
+    const onSignUpClick = () => {
+        signUp(login, password);
+    };
+
+    const onClickFunc = match.path !== "/login" ? onSignUpClick : onSignInClick;
+
+    const onLoginChange = (e) => {
+        setLogin(e.target.value);
+    };
+
+    const onPasswordChange = (e) => {
+      setPassword(e.target.value);
     };
 
     return (
@@ -67,7 +80,7 @@ const LoginComponent = ({match}) => {
                             },
                         ]}
                     >
-                        <Input />
+                        <Input onChange={onLoginChange} placeholder="Введите лагин" />
                     </Form.Item>
 
                     <Form.Item
@@ -80,10 +93,10 @@ const LoginComponent = ({match}) => {
                             },
                         ]}
                     >
-                        <Input.Password />
+                        <Input.Password onChange={onPasswordChange} value={password} />
                     </Form.Item>
                     <Form.Item {...tailLayout}>
-                        <Button type="primary" htmlType="submit" onClick={onClick}>
+                        <Button type="primary" htmlType="submit" onClick={onClickFunc}>
                             {buttonText}
                         </Button>
                     </Form.Item>
@@ -93,4 +106,17 @@ const LoginComponent = ({match}) => {
     );
 };
 
-export default LoginComponent;
+const mapStateToProps = (state) => {
+    return {
+        userData: state
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        signUp: (login, password) => dispatch(SignUp(login, password)),
+        signIn: (login, password) => dispatch(SignIn(login, password))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
