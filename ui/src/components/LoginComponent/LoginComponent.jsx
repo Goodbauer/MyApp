@@ -29,9 +29,7 @@ const cardStyles = {
     width: '400px',
 };
 
-const LoginComponent = ({ signUp, signIn, userData, match }) => {
-
-    console.log(userData);
+const LoginComponent = ({ signUp, signIn, match }) => {
 
     const [login, setLogin] = useState();
     const [password, setPassword] = useState();
@@ -108,7 +106,6 @@ const LoginComponent = ({ signUp, signIn, userData, match }) => {
 
 const mapStateToProps = (state) => {
     return {
-        userData: state
     }
 }
 

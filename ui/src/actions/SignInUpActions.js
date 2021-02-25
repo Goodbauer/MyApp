@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from "axios";
 import tokenSaver from '../util/tokenSaver';
-import {getUserInfo} from './UserActions';
 
 const SignIn = async (login, password) => {
     await axios({
@@ -12,9 +11,7 @@ const SignIn = async (login, password) => {
             password: `${password}`
         }
     })
-        .then((answer) => tokenSaver(answer.data.accessToken))
-        .then(() => getUserInfo())
-      ;
+        .then((answer) => tokenSaver(answer.data.accessToken));
 };
 
 const SignUp = async (login, password) => {
@@ -27,7 +24,6 @@ const SignUp = async (login, password) => {
         }
     })
         .then((answer) => tokenSaver(answer.data.token.body.accessToken))
-        .then(() => getUserInfo());
 };
 
 export {

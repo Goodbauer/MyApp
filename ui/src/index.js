@@ -8,8 +8,6 @@ import 'antd/dist/antd.css';
 
 const store = getStore();
 
-console.log(store);
-
 ReactDOM.render(
     <Provider store={store}>
         <App />
