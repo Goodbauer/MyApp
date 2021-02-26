@@ -10,7 +10,7 @@ import background from './maxresdefault.jpg';
 import './App.css';
 import {getUserInfo} from "./actions/UserActions";
 
-const App = ({authenticated, getUserInfo}) => {
+const App = ({authenticated, getUserInfo, userData}) => {
 
     const headerStyle ={
         backgroundImage: `url(${background})`,
@@ -20,15 +20,14 @@ const App = ({authenticated, getUserInfo}) => {
         backgroundSize: 'cover',
         backgroundRepeat: 'no-repeat'
     }
+    console.log(userData);
 
-    console.log(authenticated);
     useEffect(() => {
         if (authenticated) {
+            console.log(123);
             getUserInfo();
         }
     }, [authenticated]);
-
-
 
   return (
       <div className="main-page" style={headerStyle}>
@@ -45,7 +44,8 @@ const App = ({authenticated, getUserInfo}) => {
 
 const mapStateToProps = state => {
     return {
-        authenticated: state.authenticated
+        authenticated: state.authenticated,
+        userData: state.userData
     }
 };
 
