@@ -1,20 +1,30 @@
 import React from 'react';
-import axios from "axios";
 
-import {setUserData} from "./index";
+import {setUserData, signUpSuccess} from "./index";
+import axios from "axios";
 
 
 const getUserInfo = () => {
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
-    };
-    return axios({
-        method: 'get',
-        url: 'http://localhost:8080/api/user/me',
-        headers
-    })
-        .then((responce) => {setUserData(responce)});
+  const headers = {
+    'Content-Type': 'application/json',
+    'Authorization': localStorage.getItem('accessToken')
+  };
+
+  return dispatch => {
+    axios.get('http://localhost:8080/api/user/me',
+      {
+        headers: headers
+      })
+      .then(response => {
+        dispatch(setUserData(response.data));
+      })
+  }
+
+  // return axios.get('http://localhost:8080/api/user/me',
+  //   {headers: headers}
+  // ).then((response) => {
+  //   setUserData(response)
+  // });
 }
 
-export { getUserInfo };
+export {getUserInfo};

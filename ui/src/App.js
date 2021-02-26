@@ -9,46 +9,47 @@ import background from './maxresdefault.jpg';
 import './App.css';
 import {getUserInfo} from "./actions/UserActions";
 
-const App = ({hasToken, getUser}) => {
+const App = ({authenticated, getUserInfo}) => {
 
-    console.log(hasToken);
-    const headerStyle ={
-        backgroundImage: `url(${background})`,
-        width: '100vw',
-        height: '100vh',
-        backgroundPosition: 'center',
-        backgroundSize: 'cover',
-        backgroundRepeat: 'no-repeat'
+  const headerStyle = {
+    backgroundImage: `url(${background})`,
+    width: '100vw',
+    height: '100vh',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat'
+  }
+
+  console.log(authenticated);
+  useEffect(() => {
+    if (authenticated) {
+      getUserInfo();
     }
-
-    useEffect(() => {
-        hasToken && getUser();
-    }, [hasToken]);
-
+  }, [authenticated]);
 
 
   return (
-      <div className="main-page site-card-border-less-wrapper" style={headerStyle}>
-        <Router>
-            <Route exact path="/" component={MainPageComponent}/>
-            <Route exact path="/login" component={LoginComponent}/>
-            <Route exact path="/register" component={LoginComponent}/>
+    <div className="main-page site-card-border-less-wrapper" style={headerStyle}>
+      <Router>
+        <Route exact path="/" component={MainPageComponent}/>
+        <Route exact path="/login" component={LoginComponent}/>
+        <Route exact path="/register" component={LoginComponent}/>
 
-        </Router>
-      </div>
+      </Router>
+    </div>
   );
 };
 
 const mapStateToProps = state => {
-    return {
-        hasToken: state
-    }
+  return {
+    authenticated: state.authenticated
+  }
 };
 
 const mapDispatchToProps = dispatch => {
-    return {
-        getUser: () => dispatch(getUserInfo())
-    }
+  return {
+    getUserInfo: () => dispatch(getUserInfo())
+  }
 };
 
 
