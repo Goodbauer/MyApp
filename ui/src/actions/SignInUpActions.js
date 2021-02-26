@@ -1,29 +1,35 @@
 import React from 'react';
 import axios from "axios";
-import tokenSaver from '../util/tokenSaver';
+import {signUpSuccess, signInSuccess} from "./index";
 
 const SignIn = async (login, password) => {
-    await axios({
-        method: 'post',
-        url: 'http://localhost:8080/api/auth/signin',
-        data: {
-            username: `${login}`,
-            password: `${password}`
-        }
-    })
-        .then((answer) => tokenSaver(answer.data.accessToken));
+    return dispatch => {
+        axios.post('http://localhost:8080/api/auth/signin',
+            {
+                username: `${login}`,
+                password: `${password}`
+            })
+            .then(response => {
+                let token = `${response.data.tokenType} ${response.data.accessToken}`;
+                localStorage.setItem('accessToken', token);
+                dispatch(signInSuccess());
+            })
+    }
 };
 
 const SignUp = async (login, password) => {
-    await axios({
-        method: 'post',
-        url: 'http://localhost:8080/api/auth/signup',
-        data: {
-            username: `${login}`,
-            password: `${password}`
-        }
-    })
-        .then((answer) => tokenSaver(answer.data.token.body.accessToken))
+    return dispatch => {
+        axios.post('http://localhost:8080/api/auth/signup',
+            {
+                username: `${login}`,
+                password: `${password}`
+            })
+            .then(response => {
+                let token = `${response.data.token.body.tokenType} ${response.data.token.body.accessToken}`;
+                localStorage.setItem('accessToken', token);
+                return dispatch(signUpSuccess());
+            })
+    }
 };
 
 export {

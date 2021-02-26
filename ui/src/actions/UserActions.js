@@ -7,14 +7,18 @@ import {setUserData} from "./index";
 const getUserInfo = () => {
     const headers = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+        'Authorization': localStorage.getItem('accessToken')
     };
-    return axios({
-        method: 'get',
-        url: 'http://localhost:8080/api/user/me',
-        headers
-    })
-        .then((responce) => {setUserData(responce)});
+
+    return dispatch => {
+        axios.get('http://localhost:8080/api/user/me',
+            {
+                headers: headers
+            })
+            .then(response => {
+                dispatch(setUserData(response.data));
+            })
+    }
 }
 
 export { getUserInfo };
