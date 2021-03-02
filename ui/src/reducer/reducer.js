@@ -11,7 +11,6 @@ const reducer = (state = {...initialState}, action) => {
     state = {
         ...state
     };
-    console.log(action);
     switch (action.type) {
         case 'SET_USER_DATA':
             return {...state, userData: action.payload}

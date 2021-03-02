@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {Form, Input, Button, Checkbox, Card} from 'antd';
 import { connect } from 'react-redux';
+import { LOGIN_PAGE, MAIN_PAGE } from '../../constants/Paths';
 
 import { SignIn, SignUp } from '../../actions/SignInUpActions';
 
 import './LoginComponent.css';
+import background from "../../maxresdefault.jpg";
 
 const layout = {
     labelCol: {
@@ -29,13 +31,28 @@ const cardStyles = {
     width: '400px',
 };
 
-const LoginComponent = ({ signUp, signIn, match }) => {
+const headerStyle = {
+    backgroundImage: `url(${background})`,
+    width: '100vw',
+    height: '100vh',
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat'
+}
+
+const LoginComponent = ({ signUp, signIn, match, authenticated, history }) => {
 
     const [login, setLogin] = useState();
     const [password, setPassword] = useState();
 
-    const buttonText = match.path !== "/login" ? "Зарегистрироваться" : "Войти";
-    const titleText = match.path !== "/login" ? "Регистрация" : "Добро пожаловать!";
+    useEffect(() => {
+        if (authenticated) {
+            history.push(MAIN_PAGE);
+        }
+    }, [authenticated]);
+
+    const buttonText = match.path !== LOGIN_PAGE ? "Зарегистрироваться" : "Войти";
+    const titleText = match.path !== LOGIN_PAGE ? "Регистрация" : "Добро пожаловать!";
 
     const onSignInClick = () => {
         signIn(login, password);
@@ -56,7 +73,7 @@ const LoginComponent = ({ signUp, signIn, match }) => {
     };
 
     return (
-        <div className="login-form">
+        <div className="login-form" style={headerStyle}>
             <Card className="sign-login-card" bordered={false} style={cardStyles}>
                 <Form
                     {...layout}
@@ -104,8 +121,9 @@ const LoginComponent = ({ signUp, signIn, match }) => {
     );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
+        authenticated: state.authenticated
     }
 }
 
